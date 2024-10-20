@@ -1,11 +1,7 @@
 class Solution {
 public:
-    int result = 0;
-
-    string solve(vector<string>str,string op)
+    int solve(int a, int b, string op)
     {
-        int b = stoi(str[0]);
-        int a = stoi(str[1]);
         int val = 0;
         if(op=="-")
         {
@@ -23,46 +19,31 @@ public:
         {
             val = a/b;
         }
-        else
-        {
-            val = 0;
-        }
-        result = val;
-        return to_string(val);
+        
+
+        return val;
     }
-
-
-    int evalRPN(vector<string>& s) {
-        stack<string>st;
-        int n = s.size();
-        if(n<2)
+    int evalRPN(vector<string>& tokens) {
+        stack<int> st;
+        for(string &token: tokens)
         {
-            return stoi(s[0]);
-        }
-
-        // int result = 0;
-        for(int i=0;i<n;i++)
-        {
-            vector<string>vec;
-            if(s[i]=="-" || s[i]=="+" || s[i]=="*" || s[i]=="/")
+            if(token=="+" || token=="-" || token=="*" || token=="/")
             {
-                for(int j=0;j<2;j++)
-                {
-                   vec.push_back(st.top());
-                    st.pop();
-                }
-                string op = s[i];
-                string val = solve(vec,op);
-                st.push(val);
+                int b = st.top();
+                st.pop();
+
+                int a = st.top();
+                st.pop();
+
+                int result = solve(a,b,token);
+                st.push(result);
             }
             else
             {
-                st.push(s[i]);
+                st.push(stoi(token));
             }
         }
-        
-        return result;
-
+        return st.top();
         
     }
 };
