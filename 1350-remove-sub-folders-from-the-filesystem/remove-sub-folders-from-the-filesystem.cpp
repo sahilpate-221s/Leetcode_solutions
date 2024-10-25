@@ -3,7 +3,7 @@ public:
     vector<string> removeSubfolders(vector<string>& folder) {
         unordered_set<string>umap(begin(folder),end(folder));
         vector<string> result;
-        for(string currFolder : folder)
+        for(string& currFolder : folder)
         {
             bool isSubFolder = false;
             string tempFolder = currFolder;
