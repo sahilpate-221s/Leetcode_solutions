@@ -20,11 +20,42 @@ public:
     int lengthOfLongestSubsequence(vector<int>& nums, int target) {
 
             int n = nums.size();
-            vector<vector<int>>dp(n,vector<int>(target+1,-1));
-            int result = helper(0, nums, target,dp);
+            vector<vector<int>>dp(n+1,vector<int>(target+1,INT_MIN));
+            // int result = helper(0, nums, target,dp);
 
-            return (result < 0)?-1:result;
+            // return (result < 0)?-1:result;
 
+
+        //tabulation
+
+
+        // BASE case 
+        for(int i=0;i<=n;i++)
+        {
+            dp[i][0] = 0;
+        }
+
+        // last se shuru karenge 
+        for(int i=n-1;i>=0;i--)
+        {
+            // target ko zero se start karenge
+            for(int tg = 0;tg<=target;tg++)
+            {
+                // no Take 
+                int noTake = dp[i+1][tg];
+                // take 
+                int take = INT_MIN;
+                if(nums[i] <=tg)
+                {
+                    take = 1 + dp[i+1][tg-nums[i]];
+                }
+
+                dp[i][tg]= max(take,noTake);
+            }
+        }
+
+        return (dp[0][target] < 0) ? -1: dp[0][target];
+        
             
         
     }
