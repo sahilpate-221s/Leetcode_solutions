@@ -1,26 +1,16 @@
 class Solution {
 public:
-    bool bfs(unordered_map<int,vector<int>>& adj,int node, vector<int>& color)
+    bool dfs(unordered_map<int,vector<int>>& adj,int node, vector<int>& color,int red)
     {
-        queue<int>que;
-        que.push(node);
+        color[node]=red;
 
-        color[node]=1; //RED
-
-        while(!que.empty())
+        for(auto &v: adj[node])
         {
-            int u = que.front();
-            que.pop();
+            if(color[v]==color[node])return false;
 
-            for(auto &v: adj[u])
+            if(color[v]==-1)
             {
-                if(color[u]==color[v])return false;
-
-                if(color[v]==-1)
-                {
-                    que.push(v);
-                    color[v]= 1-color[u];
-                }
+                if(!dfs(adj,v,color,1-red))return false;
             }
         }
 
@@ -39,12 +29,13 @@ public:
         }
 
         vector<int> color(n+1,-1);
+        int red = 1;
 
         for(int i=1;i<=n;i++)
         {
             if(color[i]==-1)
             {
-                if(bfs(adj,i,color) == false)
+                if(dfs(adj,i,color,red) == false)
                 {
                     return false;
                 }
