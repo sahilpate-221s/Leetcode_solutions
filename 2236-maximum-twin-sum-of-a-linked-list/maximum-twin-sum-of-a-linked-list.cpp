@@ -10,24 +10,51 @@
  */
 class Solution {
 public:
-    int pairSum(ListNode* head) {
-        vector<int>temp;
-        ListNode* t = head;
-        while(t!= NULL)
+    ListNode* findMiddle(ListNode* head)
+    {
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        while(fast != NULL && fast->next != NULL)
         {
-            temp.push_back(t->val);
-            t=t->next;
+            fast = fast->next->next;
+            slow=slow->next;
         }
-        int n = temp.size();
+
+        return slow;
+    }
+
+    ListNode* reverse(ListNode* head)
+    {
+        if(head == NULL || head->next==NULL)return head;
+
+        ListNode* last = reverse(head->next);
+        head->next->next = head;
+        head->next = NULL;
+
+        return last;
+    }
+    int pairSum(ListNode* head) {
+        if(head==NULL || head->next == NULL)return 0;
+        
+        ListNode* middle = findMiddle(head);
+        // cout<<middle->val;
+        ListNode* secondHalf = reverse(middle);
+        cout<<secondHalf->val;
+
+        ListNode* first = head;
+        ListNode* second = secondHalf;
+
         int maxi = -1;
-        for(int i=0;i<n/2;i++)
+        while(second != NULL)
         {
-            int index = n-1-i;
-            int val = temp[i] + temp[index];
+            int val = first->val + second->val;
+            second=second->next;
+            first=first->next;
+
             maxi = max(maxi,val);
         }
 
         return maxi;
-        
     }
 };
