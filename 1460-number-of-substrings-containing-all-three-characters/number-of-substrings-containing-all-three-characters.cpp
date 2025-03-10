@@ -14,7 +14,8 @@ public:
 
             while(umap[0] > 0 && umap[1] > 0 && umap[2] > 0) 
             {
-                count+= n-i;
+                count+= n-i; // iska matlab hai iss element tak mil gye to iske baad ke sare range me honge thats why we do n-i
+                ;
                 umap[s[j]-'a']--;
                 j++;
             }
