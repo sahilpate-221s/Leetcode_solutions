@@ -1,20 +1,11 @@
 class Solution {
 public:
     int maximumCount(vector<int>& nums) {
-        int neg = 0;
-        int pos = 0;
-        for(int i=0;i<nums.size();i++)
-        {
-            if(nums[i] < 0)
-            {
-                neg++;
-            }
-            if(nums[i] > 0)
-            {
-                pos++;
-            }
-        }
-        return max(neg,pos);
+        int n = nums.size();
+        int neg = lower_bound(nums.begin(), nums.end(), 0)- nums.begin();;
+        cout<<neg;
+        int pos = nums.end() - upper_bound(nums.begin(), nums.end(), 0);
         
+        return max(pos,neg);
     }
 };
