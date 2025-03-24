@@ -6,6 +6,7 @@ public:
 
         int freeDays = 0;
         int maxDay = meetings[0][1];
+        
         if(meetings[0][0]  > 1)
         {
             freeDays+= (meetings[0][0]-1);
