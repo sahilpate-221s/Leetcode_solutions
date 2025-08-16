@@ -1,39 +1,21 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        if (nums.empty()) return 0;
+        unordered_set<int> s(nums.begin(), nums.end());
 
-        priority_queue<int, vector<int>, greater<int>> pq;
+        int maxi = 0;
+        for (int num : s) {
+            // only start counting if it's the start of a sequence
+            if (!s.count(num - 1)) {
+                int curr = num;
+                int streak = 1;
 
-        for (auto it : nums) {
-            pq.push(it);
-        }
-
-        int prev = pq.top();
-        pq.pop();
-
-        int count = 1;   // first element starts a streak
-        int maxi = 1;
-
-        while (!pq.empty()) {
-            int curr = pq.top();
-            pq.pop();
-
-            if (curr == prev) {
-                // skip duplicates
-                continue;
-            } 
-            else if (curr == prev + 1) {
-                // extend streak
-                count++;
-            } 
-            else {
-                // streak breaks
-                count = 1;
+                while (s.count(curr + 1)) {
+                    curr++;
+                    streak++;
+                }
+                maxi = max(maxi, streak);
             }
-
-            maxi = max(maxi, count);
-            prev = curr;
         }
         return maxi;
     }
