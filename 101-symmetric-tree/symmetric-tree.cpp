@@ -11,19 +11,21 @@
  */
 class Solution {
 public:
-    bool solve(TreeNode* L, TreeNode* R)
+    bool solve(TreeNode* p, TreeNode* q)
     {
-        //base case
-        if(L==NULL && R==NULL)return true;
+        if(!p && !q)return true;
+        if(!p || !q)return false;
+        
+        if(p->val == q->val)
+        {
+            return solve(p->left,q->right) && solve(p->right,q->left);
+        }
 
-        if(L==NULL)return false;
-        if(R==NULL)return false;
-        if(L->val != R->val)return false;
-
-        //recursion call kar dunga
-        return solve(L->left,R->right) && solve(L->right,R->left);
+        return false;
     }
     bool isSymmetric(TreeNode* root) {
+        if(!root)return true;
+
         return solve(root->left, root->right);
         
     }
