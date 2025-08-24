@@ -1,38 +1,32 @@
 class Solution {
 public:
-    bool f(int index,vector<int>& nums,int sum,vector<vector<int>>& dp)
-    {
-        if(sum==0)
+    bool helper(vector<int>& nums, int sum, int index,vector<vector<int>>&dp) {
+        if (index >= nums.size())
+            return false;
+        if (sum == 0) {
             return true;
-        if(index==0) return nums[0]==sum;
+        }
 
         if(dp[index][sum] != -1)return dp[index][sum];
 
-        bool noTake = f(index-1,nums,sum,dp);
-        bool take = false;
-        if(sum>=nums[index])
-        {
-            take = f(index-1,nums,sum-nums[index],dp);
+        int noTake = helper(nums, sum, index + 1,dp);
+        int take = 0;
+        if (nums[index] <= sum) {
+            take = helper(nums, sum - nums[index], index + 1,dp);
         }
 
-        return dp[index][sum] =  take || noTake; 
+        return dp[index][sum] =  noTake || take;
     }
     bool canPartition(vector<int>& nums) {
-        ios_base::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL);
-
-        int sum = 0;
-        for(auto it: nums)
-            sum+=it;
-        
-        int n = nums.size();
-        int k=sum/2;
-
-        vector<vector<int>> dp(n,vector<int>(k+1,-1));
-
-        if(sum %2 != 0)
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if (sum % 2 != 0)
             return false;
-        else 
-            return f(n-1,nums,k,dp);
+
+        sum = sum / 2;
+
+        vector<vector<int>>dp(nums.size()+1,vector<int>(sum+1,-1));
+
+        return helper(nums, sum, 0,dp);
         
     }
 };
