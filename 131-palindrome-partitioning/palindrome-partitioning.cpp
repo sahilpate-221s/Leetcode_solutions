@@ -1,40 +1,42 @@
 class Solution {
-private:
-    int n;
-    vector<vector<string>> res;
-    vector<string> cur;
 public:
-    vector<vector<string>> partition(string s) {
-        n = s.size();
-        solve(0, s);
-        return res;
-    }
+    vector<vector<string>> answer;
+    vector<string> temp;
 
-    void solve(int idx, string &s) {
-        if (idx == n) {
-            res.push_back(cur);
+    void solve(int idx, string& s) {
+        if (idx == s.length()) {
+            answer.push_back(temp);
             return;
         }
 
-        string curPalindrome = "";
-        for (int i = idx; i < n; ++i) {
-            curPalindrome += s[i];
+        string present = "";
 
-            if (isPalindrome(curPalindrome)) {
-                cur.push_back(curPalindrome);
+        for (int i = idx; i < s.length(); i++) {
+            present += s[i];
+
+            if (isPal(present)) {
+                temp.push_back(present);
                 solve(i + 1, s);
-                cur.pop_back();
+                temp.pop_back();
             }
         }
     }
 
-    bool isPalindrome(string &str) {
-        int sz = str.size();
-        for (int i = 0; i < sz / 2; ++i)
-        {
-            if (str[i] != str[sz - i - 1])
+    bool isPal(string str) {
+        int i = 0;
+        int j = str.length() - 1;
+
+        while (i < j) {
+            if (str[i] != str[j])
                 return false;
+            i++;
+            j--;
         }
         return true;
+    }
+
+    vector<vector<string>> partition(string s) {
+        solve(0, s);
+        return answer;
     }
 };
