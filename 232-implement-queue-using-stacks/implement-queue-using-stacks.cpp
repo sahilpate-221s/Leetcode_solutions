@@ -1,55 +1,49 @@
 class MyQueue {
 public:
-    stack<int> input;
-    stack<int> output;
-    int peekEl = -1;
+    stack<int>st;
+    stack<int>helper;
 
     MyQueue() {
         
     }
     
     void push(int x) {
-        if(input.empty())
-        {
-            peekEl = x;
-        }
-        input.push(x); // har baar karna hai
-        
+        st.push(x);
     }
     
     int pop() {
-        //amortazed o(1) -> worst me o(n)
-        if(output.empty()) // jab output empty hoga tab  o(n)
+        if(helper.empty())
         {
-            while(!input.empty())
-            {
-                output.push(input.top());
-                input.pop();
-            }
-        }
 
-        int val = output.top(); // o(1) kab output empty nahi hoga
-        output.pop();
+        while(!st.empty())
+        {
+            helper.push(st.top());
+            st.pop();
+        }
+            }
+
+        int val = helper.top();
+        helper.pop();
+
         return val;
-        
     }
     
     int peek() {
-        if(!output.empty())
+        if(helper.empty())
         {
-            return output.top();
+            while(!st.empty())
+            {
+                helper.push(st.top());
+                st.pop();
+            }
         }
-        
-        return peekEl;
+
+        int val = helper.top();
+        return val;
     }
     
     bool empty() {
-        if(input.empty() && output.empty())
-        {
-            return true;
-        }
-        
-        return false;
+        return st.empty() && helper.empty();
     }
 };
 
