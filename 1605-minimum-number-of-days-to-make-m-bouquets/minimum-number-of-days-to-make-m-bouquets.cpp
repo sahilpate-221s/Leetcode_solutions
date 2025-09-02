@@ -1,53 +1,40 @@
 class Solution {
 public:
-
-    int checkBloom(int mid, vector<int>& bloomDay, int k)
-    {
+    bool isPossible(vector<int>& nums, int mid, int m, int k) {
+        int continuousDays = 0;
         int bloomdays = 0;
-        int continousDays = 0;
 
-        for(int i=0;i<bloomDay.size();i++)
-        {
-            if(bloomDay[i] <= mid)
-            {
-                continousDays++;
-            }
-            else
-            {
-                continousDays=0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] <= mid) {
+                continuousDays++;
+            } else {
+                continuousDays = 0;
             }
 
-
-            if(continousDays == k)
-            {
+            if (continuousDays == k) {
                 bloomdays++;
-                continousDays = 0;
+                continuousDays = 0;
             }
         }
-        return bloomdays;
+        return bloomdays >= m;
     }
     int minDays(vector<int>& bloomDay, int m, int k) {
 
-
         int left = 0;
-        int right = *max_element(begin(bloomDay), end(bloomDay));
+        int right = *max_element(bloomDay.begin(), bloomDay.end());
 
         int days = -1;
-        while(left <= right)
-        {
-            long long mid = (left + right)/2;
 
-            if(checkBloom(mid, bloomDay, k) >= m)
-            {
-                days= mid;
-                right = mid-1;
-            }
-            else
-            {
-                left = mid+1;
+        while (left <= right) {
+            long long mid = (left + right) / 2;
+
+            if (isPossible(bloomDay, mid, m, k)) {
+                days = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
             }
         }
         return days;
-        
     }
 };
