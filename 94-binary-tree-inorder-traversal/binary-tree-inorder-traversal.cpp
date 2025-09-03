@@ -11,19 +11,36 @@
  */
 class Solution {
 public:
-    vector<int>answer;
-    void inorder(TreeNode* root)
-    {
-        if(!root)return;
-        inorder(root->left);
-        answer.push_back(root->val);
-        inorder(root->right);
-    }
     vector<int> inorderTraversal(TreeNode* root) {
-        if(!root)return {};
+        vector<int>result;
+        TreeNode* curr = root;
 
-        inorder(root);
-        return answer;
+        while(curr != NULL)
+        {
+            if(curr->left == NULL)
+            {
+                result.push_back(curr->val);
+                curr=curr->right;
+            }
+            else
+            {
+                TreeNode* leftchild = curr->left;
+
+                while(leftchild->right != NULL)
+                {
+                    leftchild = leftchild->right;
+                }
+
+                leftchild->right = curr;
+                //curr ke left ko NULL kar skte hai
+                TreeNode* temp = curr;
+                curr = curr->left;
+                temp->left = NULL;
+            }
+
+        }
+
+        return result;
         
     }
 };
