@@ -12,24 +12,20 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        //moris traversal se 
-
         TreeNode* curr = root;
-        while(curr != NULL)
+        while(curr)
         {
-
             if(curr->left)
             {
-                //predecessor find karna 
-                TreeNode* prev = curr->left;
-                while(prev->right)
+                TreeNode* temp = curr->left;
+                while(temp->right)
                 {
-                    prev = prev->right;
+                    temp = temp->right;
                 }
-
-                prev->right = curr->right;
-                curr->right= curr->left;
+                temp->right = curr->right;
+                curr->right = curr->left;
                 curr->left = NULL;
+
             }
             curr = curr->right;
         }
