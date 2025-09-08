@@ -1,46 +1,48 @@
 class Solution {
 public:
-    int findIndex(vector<vector<int>>& mat,int n, int m ,int col)
-    {
+//row based approach 
+    int findMaxIndex(vector<vector<int>>& mat, int m, int row) {
         int maxIndex = -1;
         int maxValue = -1;
-        for(int i=0;i<n;i++)
-        {
-            if(mat[i][col] > maxValue)
-            {
-                maxValue = mat[i][col];
-                maxIndex=i;
+
+        for (int j = 0; j < m; j++) {
+            if (mat[row][j] > maxValue) {
+                maxValue = mat[row][j];
+                maxIndex = j;
             }
         }
         return maxIndex;
     }
+
     vector<int> findPeakGrid(vector<vector<int>>& mat) {
         int n = mat.size();
         int m = mat[0].size();
 
         int low = 0;
-        int high = m-1;
+        int high = n - 1;
 
-        while(low <= high)
-        {
-            int mid = low + (high-low)/2;
-            int maxIndex = findIndex(mat,n,m,mid);
+        while (low <= high) {
+            int mid = (low + high) / 2;
 
-            int left = mid-1 >=0 ? mat[maxIndex][mid-1]:-1;
-            int right = mid+1 <m ? mat[maxIndex][mid+1]:-1;
+            // Find the column index of the maximum element in the mid row
+            int maxIndex = findMaxIndex(mat, m, mid);
 
-            if(mat[maxIndex][mid] > left && mat[maxIndex][mid] > right)
-            {
-                return {maxIndex,mid};
+            // Get up and down neighbors
+            int up = mid - 1 >= 0 ? mat[mid - 1][maxIndex] : -1;
+            int down = mid + 1 < n ? mat[mid + 1][maxIndex] : -1;
+
+            if (mat[mid][maxIndex] > up && mat[mid][maxIndex] > down) {
+                return {mid, maxIndex};
             }
-            if(mat[maxIndex][mid] < left)
-            {
-                high = mid-1;
+
+            // Move towards the bigger neighbor (up or down)
+            if (mat[mid][maxIndex] < down) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
-            else
-                low = mid+1;
         }
-        return {-1,-1};
-        
+
+        return {-1, -1};
     }
 };
