@@ -1,78 +1,49 @@
 class Solution {
 public:
     vector<vector<string>> result;
-    int N;
-
-    // now for better time complexity by reducing the call of isVlaid by using
-    // extra space
 
     unordered_set<int> columns;
-    unordered_set<int> antiDiag;
-    unordered_set<int> diag;
+    unordered_set<int> diagonals;
+    unordered_set<int> antiDiagonals;
 
-    // bool isValid(vector<string>& board, int row, int col) {
-
-    //     // upper ke liye
-    //     for (int i = row - 1; i >= 0; i--) {
-    //         if (board[i][col] == 'Q')
-    //             return false;
-    //     }
-
-    //     // upper left diagonal
-    //     for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-    //         if (board[i][j] == 'Q')
-    //             return false;
-    //     }
-
-    //     // for upper right diagonal
-    //     for (int i = row - 1, j = col + 1; i >= 0 && j < N; i--, j++) {
-    //         if (board[i][j] == 'Q')
-    //             return false;
-    //     }
-
-    //     return true;
-    // }
-
-    void solve(vector<string>& board, int row) {
+    void solve(vector<string>& board, int row, int n) {
         // base case
-        if (row >= N) {
+        if (row >= n) {
             result.push_back(board);
             return;
         }
 
-        for (int col = 0; col < N; col++) {
-            int diagonal_val = row - col;
-            int antiDiag_val = row + col;
+        for (int col = 0; col < n; col++) {
+            // find the diagonal and antidiagoal
+            int anti_diagonal = row - col;
+            int diagonal = row + col;
+            // if we find that the queen has aleready placed in the path all
+            // paths columns, diagonals, and antiDiagonals
 
             if (columns.find(col) != columns.end() ||
-                antiDiag.find(antiDiag_val) != antiDiag.end() ||
-                diag.find(diagonal_val) != diag.end()) {
+                diagonals.find(diagonal) != diagonals.end() ||
+                antiDiagonals.find(anti_diagonal) != antiDiagonals.end()) {
                 continue;
             }
 
             columns.insert(col);
-            antiDiag.insert(antiDiag_val);
-            diag.insert(diagonal_val);
+            diagonals.insert(diagonal);
+            antiDiagonals.insert(anti_diagonal);
             board[row][col] = 'Q';
 
-            solve(board,row+1);
+            solve(board, row + 1, n);
 
             columns.erase(col);
-            antiDiag.erase(antiDiag_val);
-            diag.erase(diagonal_val);
+            diagonals.erase(diagonal);
+            antiDiagonals.erase(anti_diagonal);
             board[row][col] = '.';
-
-
         }
     }
     vector<vector<string>> solveNQueens(int n) {
 
-        result.clear();
-        N = n;
-
         vector<string> board(n, string(n, '.'));
 
-        solve(board, 0);
+        solve(board, 0,n);
 
         return result;
     }
