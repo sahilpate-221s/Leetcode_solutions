@@ -1,29 +1,34 @@
 class Solution {
 public:
-    vector<vector<int>> st;
-    void helper(int i, int target, int n, vector<int>& temp) {
-        // base case
-        if (temp.size() == n) {
-            if (target == 0) st.push_back(temp);
+    vector<vector<int>>answer;
+
+    void helper(int num, int target, int idx, vector<int>temp)
+    {
+        //base case
+        if(temp.size() == num)
+        {
+            if(target == 0)
+            {
+                answer.push_back(temp);
+            }
             return;
         }
+    
+        for(int i=idx;i<=9;i++)
+        {
+            // if(i>target)break;
 
-        for (int start = i; start <= 9; start++) {
-            if (start > target)
-                break;
-
-            temp.push_back(start);
-            helper(start + 1, target - start, n, temp);
-            temp.pop_back();
+            if(i <= target)
+            {
+                temp.push_back(i);
+                helper(num, target-i,i+1,temp);
+                temp.pop_back();
+            }
         }
     }
     vector<vector<int>> combinationSum3(int k, int n) {
-
-        vector<int> temp;
-        helper(1, n, k, temp);
-
-        
-        
-        return st;
+        vector<int>temp;
+        helper(k,n,1,temp);
+        return answer;
     }
 };
