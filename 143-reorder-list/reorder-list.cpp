@@ -21,21 +21,20 @@ public:
         return last;
     }
 
-    ListNode* merge(ListNode* l1, ListNode* l2)
-    {
-        //base case
-        if(!l1)return l2;
-        if(!l2)return l1;
+    ListNode* merge(ListNode* l1, ListNode* l2) {
+        // base case
+        if (!l1)
+            return l2;
+        if (!l2)
+            return l1;
 
         ListNode* l1Next = l1->next;
-        ListNode* l2Next= l2->next;
+        ListNode* l2Next = l2->next;
 
         l1->next = l2;
         l2->next = merge(l1Next, l2Next);
 
         return l1;
-
-
     }
     void reorderList(ListNode* head) {
         if (!head || !head->next)
@@ -60,6 +59,23 @@ public:
 
         // merge the two lists the first one and the reversed one
 
-        merge(head, reversed);
+        // merge(head, reversed);
+        // using iterative word
+
+        ListNode* first = head;
+        ListNode* second = reversed;
+
+        while (first && second) {
+            ListNode* fNext = first->next;
+            ListNode* sNext = second->next;
+
+            first->next = second;
+            if (fNext == nullptr)
+                break; // handle odd-length lists
+            second->next = fNext;
+
+            first = fNext;
+            second = sNext;
+        }
     }
 };
