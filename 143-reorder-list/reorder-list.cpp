@@ -10,49 +10,56 @@
  */
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head)
-    {
-        if(!head || !head->next)return head;
+    ListNode* reverse(ListNode* head) {
+        if (!head || !head->next)
+            return head;
 
-        ListNode* last = reverseList(head->next);
+        ListNode* last = reverse(head->next);
         head->next->next = head;
         head->next = NULL;
 
         return last;
     }
 
-    ListNode* mergeList(ListNode* l1, ListNode* l2)
+    ListNode* merge(ListNode* l1, ListNode* l2)
     {
+        //base case
         if(!l1)return l2;
-        if(!l2)return l1; 
+        if(!l2)return l1;
 
-        ListNode* next1 = l1->next;
-        ListNode* next2 = l2->next;
+        ListNode* l1Next = l1->next;
+        ListNode* l2Next= l2->next;
 
         l1->next = l2;
-        l2->next = mergeList(next1,next2);
+        l2->next = merge(l1Next, l2Next);
+
         return l1;
+
+
     }
     void reorderList(ListNode* head) {
+        if (!head || !head->next)
+            return;
 
-        if(!head->next)return;
+        // finding the middle of the linked list
+        ListNode* temp = head;
         ListNode* fast = head;
-        ListNode* slow= head;
         ListNode* prev = NULL;
+        ListNode* slow = head;
 
-        while(fast != NULL && fast->next != NULL )
-        {
-            fast=fast->next->next;
+        while (fast != NULL && fast->next != NULL) {
+            fast = fast->next->next;
             prev = slow;
-            slow=slow->next;
+            slow = slow->next;
         }
-
         prev->next = NULL;
-        ListNode* reversed = reverseList(slow);
 
-        ListNode* l1 = head;
-        ListNode* l2 = reversed;
+        // reverse the second List
 
-        head = mergeList(l1,l2);
+        ListNode* reversed = reverse(slow);
+
+        // merge the two lists the first one and the reversed one
+
+        merge(head, reversed);
     }
 };
