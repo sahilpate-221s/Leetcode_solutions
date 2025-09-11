@@ -4,38 +4,28 @@ public:
         int n = nums.size();
 
         int left = 0;
-        int right = n-1;
+        int right = n - 1;
 
-        int leftMax = 0;
-        int rightMax = 0;
-        int ans = 0;
+        int leftMax = -1;
+        int rightMax = -1;
+        int water = 0;
+        while (left < right) {
+           
+            leftMax = max(leftMax, nums[left]);
+            rightMax = max(rightMax, nums[right]);
 
-        while(left < right)
-        {
-            if(nums[left] > leftMax)
+            if(leftMax <= rightMax)
             {
-                leftMax = max(leftMax, nums[left]);
-            }
-            if(nums[right] > rightMax)
-            {
-                rightMax = max(rightMax, nums[right]);
-            }
-
-
-            if(leftMax < rightMax)
-            {
-                ans = ans + leftMax - nums[left];
+                water += leftMax - nums[left];
                 left++;
             }
             else
             {
-                ans = ans+rightMax - nums[right];
+                water += rightMax - nums[right];
                 right--;
             }
+            
         }
-        return ans;
-
-
-        
+        return water;
     }
 };
