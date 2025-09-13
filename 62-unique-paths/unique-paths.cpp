@@ -1,22 +1,29 @@
 class Solution {
 public:
-    int helper(int m, int n,vector<vector<int>>& dp)
-    {
-        if(m==0 && n==0)return 1;
-        if(m< 0 || n < 0)return 0;
+    int M;
+    int N;
+    int solve(int i, int j, vector<vector<int>>& dp) {
+        // base case
+        if (i == 0 && j == 0) {
+            return 1;
+        }
 
-        if(dp[m][n] != -1)return dp[m][n];
+        if (i < 0 || i >= M || j < 0 || j >= N)
+            return 0;
+            
+        if (dp[i][j] != -1)
+            return dp[i][j];
 
-        int left = helper(m-1,n,dp);
-        int upper  = helper(m,n-1,dp);
+        int left = solve(i - 1, j, dp);
+        int up = solve(i, j - 1, dp);
 
-        return dp[m][n] =  left + upper;
-       
+        return dp[i][j] = left + up;
     }
     int uniquePaths(int m, int n) {
-        if(m==0 && n==0)return 0;
-        vector<vector<int>>dp(m,vector<int>(n,-1));
-        return helper(m-1,n-1,dp);
-        
+        M = m;
+        N = n;
+
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
+        return solve(m - 1, n - 1, dp);
     }
 };
