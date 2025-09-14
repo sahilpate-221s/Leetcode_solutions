@@ -38,23 +38,40 @@ public:
         // 1 -> 2-> X       5-> 4-> 3->X 
         ListNode* reversed = reverse(slow);
 
-        ListNode* curr = head;
-        ListNode* temp = reversed;
+        // ListNode* curr = head;
+        // ListNode* temp = reversed;
 
-        ListNode* currNext;
-        ListNode* tempNext;
-        while(curr && temp)
-        {
-            currNext = curr->next;
-            tempNext = temp->next;
+        // ListNode* currNext;
+        // ListNode* tempNext;
+        // while(curr && temp)
+        // {
+        //     currNext = curr->next;
+        //     tempNext = temp->next;
 
-            curr->next = temp;
-            if(currNext == NULL)break;
-            temp->next = currNext;
-            
-            curr=currNext;
-            temp=tempNext;
-        }
+        //     curr->next = temp;
+        //     if(currNext == NULL)break;
+        //     temp->next = currNext;
+
+        //     curr=currNext;
+        //     temp=tempNext;
+        // }
+
+        merge(head,reversed);
         
     }
+
+    private:
+        ListNode* merge(ListNode* l1, ListNode* l2)
+        {
+            if(!l1)return l2;
+            if(!l2)return l1;
+
+            ListNode* l1Next= l1->next;
+            ListNode* l2Next = l2->next;
+
+            l1->next = l2;
+            l2->next = merge(l1Next, l2Next);
+            return l1;
+
+        }
 };
