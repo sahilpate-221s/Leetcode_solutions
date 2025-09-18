@@ -12,6 +12,7 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
+        
         TreeNode* curr = root;
         while(curr)
         {
@@ -19,16 +20,13 @@ public:
             {
                 TreeNode* temp = curr->left;
                 while(temp->right)
-                {
-                    temp = temp->right;
-                }
+                    temp=temp->right;
+
                 temp->right = curr->right;
                 curr->right = curr->left;
-                curr->left = NULL;
-
+                curr->left =NULL;
             }
-            curr = curr->right;
+            curr= curr->right;
         }
-        
     }
 };
