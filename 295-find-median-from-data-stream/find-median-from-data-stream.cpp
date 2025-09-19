@@ -1,46 +1,28 @@
 class MedianFinder {
 public:
-// we create two headps one left_max_heap and right_min_heap
+    priority_queue<int, vector<int>, greater<int>> right_minHeap;
+    priority_queue<int> left_maxHeap;
+    MedianFinder() {}
 
-    priority_queue<int>left_max_heap;
-    priority_queue<int,vector<int>, greater<int>>right_min_heap;
-
-    MedianFinder() {
-        
-    }
-    
     void addNum(int num) {
-        
-        // we will make sure that the left max heap size should be greater than the right min heap
-        if(left_max_heap.empty() || num < left_max_heap.top())
-        {
-            left_max_heap.push(num);
-        }
-        else
-        {
-            right_min_heap.push(num);
-        }
+        left_maxHeap.push(num);
 
-        if(abs((int)left_max_heap.size() - (int)right_min_heap.size()) > 1)
-        {
-            right_min_heap.push(left_max_heap.top());
-            left_max_heap.pop();
-        }
-        else if(left_max_heap.size() < right_min_heap.size())
-        {
-            left_max_heap.push(right_min_heap.top());
-            right_min_heap.pop();
+        // Step 2: balance -> move top of left to right
+        right_minHeap.push(left_maxHeap.top());
+        left_maxHeap.pop();
+
+        if (left_maxHeap.size() - right_minHeap.size() > 1) {
+            left_maxHeap.push(right_minHeap.top());
+            right_minHeap.pop();
         }
     }
-    
+
     double findMedian() {
-        if(left_max_heap.size() == right_min_heap.size())
-        {
-            double median = (left_max_heap.top() + right_min_heap.top() ) / 2.0;
-            return median;
+        if (left_maxHeap.size() == right_minHeap.size()) {
+            double val = (left_maxHeap.top() + right_minHeap.top()) / 2.0;
+            return val;
         }
-        // agar odd numberes hai to left max heap se nikal denge
-        return left_max_heap.top();
+        return left_maxHeap.top();
     }
 };
 
