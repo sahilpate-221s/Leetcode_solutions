@@ -1,26 +1,23 @@
 class Solution {
 public:
     bool isValid(string s) {
-        ios_base::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL);
-        stack<char> st;
+        stack<char>st;
+
         for(int i=0;i<s.length();i++)
         {
-            if(s[i]=='(' || s[i]=='{' || s[i]=='[')
+            char ch = s[i];
+            if(st.empty() || ch == '(' || ch=='{' || ch=='[' )
+                st.push(ch);
+            else if(!st.empty() && ((ch==')' && st.top() == '(') 
+            || (ch=='}' &&st.top() == '{' ) 
+            || (ch==']' && st.top() == '[')))
             {
-                st.push(s[i]);
-            }
-            else if(!st.empty() && ((s[i] == ')' && st.top() == '(') || 
-                                    (s[i] == '}' && st.top() == '{') || 
-                                    (s[i] == ']' && st.top() == '['))) {
                 st.pop();
-            } 
-            else return false;
+            }
+            else
+                return false;
         }
-
-        return st.empty();
-        
-        
-
+        return st.size() == 0 ? true : false;
         
     }
 };
