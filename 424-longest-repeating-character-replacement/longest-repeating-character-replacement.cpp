@@ -1,28 +1,29 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        vector<int> freq(26, 0);
+        int n = s.length();
 
-        int maxFreq = 0;
-        int maxi = 0;
-        int j = 0;
+        vector<int>freq(26,0);
+        int left = 0;
+        int result =0;
+        int maxFreqCount = 0;
 
-        for (int i = 0; i < s.length(); i++) {
-            freq[s[i] - 'A']++;
-            maxFreq = max(maxFreq, freq[s[i] - 'A']);
+        for(int right=0;right<n;right++)
+        {
+            freq[s[right]-'A']++;
 
-            // If the current window size minus the count of the most frequent
-            // character is greater than k, shrink the window
-            // isme jo (i-j+1) hai ye windowsize hai  windowsize-maxFreq agar k se badi hai to 
-            //out of bound 
-            if ((i - j + 1) - maxFreq > k) {
-                freq[s[j] - 'A']--;
-                j++; // Shrink the window
+            maxFreqCount = max(maxFreqCount, freq[s[right]-'A']);
+
+
+            while((right-left+1) - maxFreqCount > k)
+            {
+                freq[s[left]-'A']--;
+                left++;
             }
 
-            maxi = max(maxi, i - j + 1); // Update max length
+            result = max(result, right-left+1);
         }
-
-        return maxi;
+        return result;
+        
     }
 };
