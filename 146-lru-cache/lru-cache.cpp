@@ -1,54 +1,44 @@
 class LRUCache {
 public:
     list<int> dll;
-    // list ke node ka  address  batane ke liye
-    map<int, pair<list<int>::iterator, int>> mp;
-    // node     // Address aur value store karega map
+    map<int, pair<list<int>::iterator, int>> umap;
 
     int n;
     LRUCache(int capacity) { n = capacity; }
 
-    void makeRecentlyUsed(int key) {
-        dll.erase(mp[key].first);
-
+    void makeRecentUsed(int key) {
+        dll.erase(umap[key].first);
         dll.push_front(key);
-        // abb key ka address change hua to map me bhi changes hone
-        mp[key].first = dll.begin(); // front me DLL me dalne se address o(1) me mil jayega 
+
+        umap[key].first = dll.begin();
     }
+
     int get(int key) {
-        if (mp.find(key) == mp.end()) {
+        if (umap.find(key) == umap.end())
             return -1;
-        }
 
-        // element ko front me dalne ke liye ye functoin bana rhe hai DLL me
-        // dalne ke liye
-        makeRecentlyUsed(key);
-
-        return mp[key].second;
+        makeRecentUsed(key);
+        return umap[key].second;
     }
 
     void put(int key, int value) {
 
-        if(mp.find(key) != mp.end())
-        {
-            mp[key].second = value;
-            makeRecentlyUsed(key);
-        }
-        else
-        {
+        if (umap.find(key) != umap.end()) {
+            umap[key].second = value;
+            makeRecentUsed(key);
+        } else {
             dll.push_front(key);
-            mp[key] = {dll.begin(), value};
+            umap[key] = {dll.begin(), value};
             n--;
         }
 
-        if(n < 0)
-        {
-            int key_tobe_deleted = dll.back();
-            mp.erase(key_tobe_deleted);
+        if (n < 0) {
+            int del_key = dll.back();
+            umap.erase(del_key);
+
             dll.pop_back();
             n++;
         }
-
     }
 };
 
