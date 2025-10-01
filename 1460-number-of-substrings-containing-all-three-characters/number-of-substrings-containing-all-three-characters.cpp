@@ -4,17 +4,15 @@ public:
         int n = s.length();
 
         unordered_map<int, int> umap;
-
-        int count = 0;
         int j = 0;
-
+        int count = 0;
         for (int i = 0; i < n; i++) {
+
             umap[s[i] - 'a']++;
 
             while (umap[0] > 0 && umap[1] > 0 && umap[2] > 0) {
-                count +=
-                    n - i; // iska matlab hai iss element tak mil gye to iske
-                           // baad ke sare range me honge thats why we do n-i
+                count += n - i;
+
                 umap[s[j] - 'a']--;
                 j++;
             }
