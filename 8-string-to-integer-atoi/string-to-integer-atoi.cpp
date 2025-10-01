@@ -1,54 +1,42 @@
 class Solution {
 public:
-    int helper(string s, int i, int result , int sign )
-    {
-        if(i>=s.length() || !isdigit(s[i]))
-        {
-            return result;
-        }
+    int solve(int i, string& s, int sign) {
+        long long digit = 0;
 
-        int digit = s[i]-'0';
+        while (i < s.length() && isdigit(s[i])) {
+            int d = s[i] - '0';
 
-        // overflow se bachne ke liye 
-        if(result > (INT_MAX - digit)/10)
-        {
-            return sign == 1 ? INT_MAX: INT_MIN;
-        }
-        result  = result * 10 + digit;
-        return helper(s, i+1,result, sign);
-    }
-    int myAtoi(string s) {
-        
-        int n = s.length();
-        int i = 0;
-        int sign = 1;
-
-        //step1 removing the leading whitespaces
-        while(i<n)
-        {
-            if(s[i] == ' ')
-            {
-                i++;
+            if (digit > (INT_MAX - d) / 10) {
+                return sign == -1 ? INT_MIN : INT_MAX;
             }
-            else break;
-        }
 
-        // steps 2 : checking for negative signs 
-        if(s[i] == '-' || s[i] == '+')
-        {
-            if(s[i] == '-')sign = -1;
+            digit = digit * 10 + d;
             i++;
         }
 
-        // step 3 converting the remainign valid string to the number;
-        int result = helper(s, i, 0, sign);
+        return sign * digit;
+    }
 
-        // if number is negative and not valid so return the MIN value possible
-        if(sign==-1 && result == INT_MIN)return INT_MIN;
-        // if number is negative and is valid then we return the negative number
-        if(sign == -1)return -result;
-        // else return the original number which we get
-        return result;
+    int myAtoi(string s) {
+        int n = s.length();
+        int sign = 1;
+        int i = 0;
 
+        // Skip leading spaces
+        while (i < n && s[i] == ' ') {
+            i++;
+        }
+
+        // If only spaces
+        if (i >= n) return 0;
+
+        // Handle + / -
+        if (s[i] == '-' || s[i] == '+') {
+            sign = (s[i] == '-') ? -1 : 1;
+            i++;
+        }
+
+        // Parse digits
+        return solve(i, s, sign);
     }
 };
