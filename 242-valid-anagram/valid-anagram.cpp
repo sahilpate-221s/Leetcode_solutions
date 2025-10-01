@@ -1,28 +1,29 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
+        unordered_map<char, int> umap;
+
         int n = s.length();
-        int m = t.length();
+        int m= t.length();
 
         if(n != m)return false;
 
-        unordered_map<char, int>umap;
-
-        for(auto it: s)
+        for(int i=0;i<n;i++)
         {
-            umap[it]++;
+            umap[s[i]]++;
         }
 
         for(auto it: t)
         {
             umap[it]--;
-            if(umap[it] <= 0)umap.erase(it);
+
         }
 
-        if(umap.size())return false;
-        return true;
-
+        for (auto it : umap) {
+            if (it.second != 0) return false;  // <-- check frequencies
+        }
 
         
+        return true;
     }
 };
