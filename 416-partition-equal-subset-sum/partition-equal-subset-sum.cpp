@@ -1,33 +1,37 @@
 class Solution {
 public:
-    bool helper(vector<int>& nums, int sum, int index,
-                vector<vector<int>>& dp) {
-        if (index >= nums.size())
-            return false;
-        if (sum == 0) {
-            return true;
+
+    bool helper(vector<int>& nums, int idx, int target, vector<vector<int>>& dp)
+    {
+        //base case
+        if(target==0)return true;
+        if(idx==0)return nums[idx] == target;
+
+
+        if(dp[idx][target] != -1)return dp[idx][target];
+
+        bool noTake = helper(nums, idx-1, target, dp);
+        bool take = false;
+
+        if(nums[idx] <= target)
+        {
+            take = helper(nums, idx-1, target-nums[idx], dp);
         }
 
-        if (dp[index][sum] != -1)
-            return dp[index][sum];
-
-        int noTake = helper(nums, sum, index + 1, dp);
-        int take = 0;
-        if (nums[index] <= sum) {
-            take = helper(nums, sum - nums[index], index + 1, dp);
-        }
-
-        return dp[index][sum] = noTake || take;
+        return dp[idx][target] = noTake || take;
     }
     bool canPartition(vector<int>& nums) {
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        if (sum % 2 != 0)
-            return false;
+        int n = nums.size();
 
-        sum = sum / 2;
+        int sum = accumulate(nums.begin(),nums.end(),0);
 
-        vector<vector<int>> dp(nums.size() + 1, vector<int>(sum + 1, -1));
+        if(sum % 2 != 0)return false;
 
-        return helper(nums, sum, 0, dp);
+        int target = sum/2;
+
+        vector<vector<int>>dp(n+1, vector<int>(sum+1,-1));
+
+        return helper(nums, n-1,target,dp);
+        
     }
 };
