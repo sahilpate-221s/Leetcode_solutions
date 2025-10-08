@@ -1,34 +1,36 @@
 class Solution {
 public:
-    int largestRectangleArea(vector<int>& heights) {
-        int n = heights.size();
+    int largestRectangleArea(vector<int>& nums) 
+    {
+        int n = nums.size();
         stack<int> st;
-        int maxArea = 0;
-        int i = 0;
+        int answer = 0;
 
-        while (i < n) {
-            // If stack is empty or current bar is taller/equal, push its index
-            if (st.empty() || heights[i] >= heights[st.top()]) {
-                st.push(i++);
-            } else {
-                // Found a bar shorter than the one at stack top
-                int topIdx = st.top();
+        for(int i = 0; i < n; i++)
+        {
+            // jab chhoti height milti hai, tab area nikal lo
+            while(!st.empty() && nums[i] < nums[st.top()])
+            {
+                int maxIdx = st.top();
                 st.pop();
 
-                // Determine width
-                int width = st.empty() ? i : (i - st.top() - 1);
-                maxArea = max(maxArea, heights[topIdx] * width);
+                int width = st.empty() ? i : i - st.top() - 1;
+                answer = max(answer, nums[maxIdx] * width);
             }
+
+            st.push(i);
         }
 
-        // Process any bars still in the stack
-        while (!st.empty()) {
-            int topIdx = st.top();
+        // bache hue bars ke liye
+        while(!st.empty())
+        {
+            int maxIdx = st.top();
             st.pop();
-            int width = st.empty() ? i : (i - st.top() - 1);
-            maxArea = max(maxArea, heights[topIdx] * width);
+
+            int width = st.empty() ? n : n - st.top() - 1;
+            answer = max(answer, nums[maxIdx] * width);
         }
 
-        return maxArea;
+        return answer;
     }
 };
