@@ -1,28 +1,42 @@
 class Solution {
 public:
-    int helper(int idx, vector<int>& nums, int target,
-               vector<unordered_map<int, int>>& dp) {
-        // base case
-        int n = nums.size();
-        if (idx == n) {
-            return target == 0;
+    
+    vector<vector<int>> dp;
+    int sum;
+    
+    int fun(int total,vector<int> v,int tar,int i)
+    {
+        if(i<0)
+        {
+            if(total-(sum-total)==tar)
+                return 1;
+            
+            return 0;
         }
-
-        if (dp[idx].count(target))
-            return dp[idx][target];
-        int pos = 0;
-        int neg = 0;
-
-        pos = helper(idx + 1, nums, target - nums[idx], dp);
-        neg = helper(idx + 1, nums, target + nums[idx], dp);
-
-        return dp[idx][target] = pos + neg;
+        
+        if(dp[i][total]!=-1)
+            return dp[i][total];
+        
+        if(total-v[i]>=0)
+        return dp[i][total] = fun(total-v[i],v,tar,i-1) + fun(total,v,tar,i-1);
+        
+        else
+            return dp[i][total] = fun(total,v,tar,i-1);
     }
-    int findTargetSumWays(vector<int>& nums, int target) {
-
-        int n = nums.size();
-        vector<unordered_map<int, int>> dp(n);
-
-        return helper(0, nums, target, dp);
+    
+    int findTargetSumWays(vector<int>& v, int tar) 
+    {
+        int total = 0;
+        int n = v.size();
+        
+        for(int i=0;i<v.size();i++)
+            total+=v[i];
+        
+        sum = total;
+        
+        dp.clear();
+        dp.resize(n+1,vector<int> (total+1,-1));
+        
+        return fun(total,v,tar,n-1);
     }
 };
