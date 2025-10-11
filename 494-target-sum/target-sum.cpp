@@ -1,45 +1,28 @@
 class Solution {
 public:
-    int f(int index,int target,vector<int>& nums,vector<vector<int>>& dp)
-    {
-        if(index==0)
-        {
-            if(target==0 && nums[0]==0)return 2;
-            if(target==0 || target==nums[0])return 1;
-            return 0;
+    int helper(int idx, vector<int>& nums, int target,
+               vector<unordered_map<int, int>>& dp) {
+        // base case
+        int n = nums.size();
+        if (idx == n) {
+            return target == 0;
         }
 
-        if(dp[index][target]!= -1)return dp[index][target];
+        if (dp[idx].count(target))
+            return dp[idx][target];
+        int pos = 0;
+        int neg = 0;
 
-        int noTake = f(index-1,target,nums,dp);
+        pos = helper(idx + 1, nums, target - nums[idx], dp);
+        neg = helper(idx + 1, nums, target + nums[idx], dp);
 
-        int take =0;
-        if(nums[index]<=target)
-        {
-            take = f(index-1,target-nums[index],nums,dp);
-        }
-
-        return dp[index][target]= (take+noTake);
+        return dp[idx][target] = pos + neg;
     }
     int findTargetSumWays(vector<int>& nums, int target) {
 
-        int n= nums.size();
+        int n = nums.size();
+        vector<unordered_map<int, int>> dp(n);
 
-        int totalSum = 0;
-        for(int i=0;i<n;i++)
-        {
-            totalSum+=nums[i];
-        }
-
-        if(totalSum-target < 0)
-            return 0;
-        if((totalSum-target)%2 ==1)
-            return 0;
-
-        int s2 = (totalSum-target)/2;
-        vector<vector<int>> dp(n,vector<int>(s2+1,-1));
-
-        return f(n-1,s2,nums,dp);
-        
+        return helper(0, nums, target, dp);
     }
 };
