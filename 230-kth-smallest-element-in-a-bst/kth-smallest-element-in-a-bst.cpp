@@ -6,36 +6,32 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
  * };
  */
 class Solution {
 public:
-int count = 0;
-int value = 0;
+    int count = 0;
+    int answer = 0;
+    void inorder(TreeNode* root, int k) {
+        if (!root)
+            return;
 
-void inorder(TreeNode* root, int k)
-{
-    if(!root)return ;
+        inorder(root->left, k);
+        count++;
 
-    inorder(root->left, k);
-    count++;
+        if (count == k) {
+            answer = root->val;
+        }
 
-    if(count==k)
-    {
-        value = root->val;
-        return;
+        inorder(root->right, k);
     }
-
-    inorder(root->right, k);
-}
     int kthSmallest(TreeNode* root, int k) {
-        if(k==0)return 0;
-
-        if(!root)return 0;
+        if (!root)
+            return 0;
 
         inorder(root, k);
-        return value;
-        
+        return answer;
     }
 };
