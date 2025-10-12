@@ -13,18 +13,14 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         if(!root)return NULL;
 
-        // if both p and q are less than root then lca found in left side
-        if(p-> val < root->val && q->val < root->val)
+        if(root->val > p->val && root->val > q->val)
         {
             return lowestCommonAncestor(root->left, p,q);
         }
-
-        // if both p and q are greater than root lca lies in right side
-        if(p->val > root->val && q->val > root->val)
+        if(root->val < p->val && root->val < q->val)
         {
-            return lowestCommonAncestor(root->right, p,q);
+            return lowestCommonAncestor(root->right,p,q);
         }
-
         return root;
         
     }
