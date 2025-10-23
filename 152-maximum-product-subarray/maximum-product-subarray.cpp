@@ -1,26 +1,30 @@
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
-        int size = nums.size();
-        int maxi = INT_MIN;
-        int product = 1;
 
-        for(int i=0;i<size;i++)
-        {
-            product *= nums[i];
+        int n = nums.size();
+        int product = 1;
+        int maxi = INT_MIN;
+
+        // find product from the left side ;
+        for (auto it : nums) {
+            product *= it;
             maxi = max(maxi, product);
-            if(product == 0)product = 1;
+            if (product == 0) {
+                product = 1;
+            }
         }
+        cout << "Product = " << product;
         product = 1;
 
-         for(int i=size-1;i>=0;i--)
-        {
-            product =product *  nums[i];
+        for (int i = n - 1; i >= 0; i--) {
+            product *= nums[i];
             maxi = max(maxi, product);
-            if(product == 0)product = 1;
+            if (product == 0) {
+                product = 1;
+            }
         }
 
         return maxi;
-        
     }
 };
