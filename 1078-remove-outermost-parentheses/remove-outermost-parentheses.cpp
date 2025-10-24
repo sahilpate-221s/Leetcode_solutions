@@ -3,14 +3,13 @@ public:
     string removeOuterParentheses(string s) {
         string answer;
         int count = 0;
-
-        for(int i=0;i<s.length();i++)
+        for(auto num:s)
         {
-            if(s[i]=='(')
+            if(num == '(')
             {
                 if(count > 0)
                 {
-                    answer+=s[i];
+                    answer.push_back(num);
                 }
                 count++;
             }
@@ -19,9 +18,10 @@ public:
                 count--;
                 if(count > 0)
                 {
-                    answer+=s[i];
+                    answer.push_back(num);
                 }
             }
+
         }
         return answer;
         
