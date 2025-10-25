@@ -21,10 +21,10 @@ public:
         return last;
     }
     bool isPalindrome(ListNode* head) {
-        if (!head)
+        if (!head || !head->next)
             return true;
 
-        // finding the mid
+        // finding the middle
         ListNode* fast = head;
         ListNode* slow = head;
 
@@ -34,16 +34,15 @@ public:
         }
 
         ListNode* reversed = reverse(slow);
-        ListNode* curr2 = reversed;
 
-        ListNode* curr1 = head;
+        ListNode* second = reversed;
+        ListNode* first = head;
 
-        while (curr2 != NULL) {
-            if (curr1->val != curr2->val)
+        while (second) {
+            if (first->val != second->val)
                 return false;
-
-                curr1 = curr1->next;
-                curr2 = curr2->next;
+            first = first->next;
+            second = second->next;
         }
         return true;
     }
