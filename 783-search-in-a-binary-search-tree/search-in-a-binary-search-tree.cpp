@@ -6,27 +6,26 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
  * };
  */
 class Solution {
 public:
     TreeNode* searchBST(TreeNode* root, int val) {
-        if(!root)return NULL;
+        if (!root)
+            return NULL;
 
-        while(root)
-        {
-            if(root->val == val)return root;
-            else if(root->val < val)
-            {
-                root=root->right;
-            }
-            else
-            {
-                root= root->left;
-            }
+        TreeNode* curr = root;
+
+        while (curr) {
+            if (curr->val == val)
+                return curr;
+            if (curr->val > val) {
+                curr = curr->left;
+            } else
+                curr = curr->right;
         }
         return NULL;
-        
     }
 };
