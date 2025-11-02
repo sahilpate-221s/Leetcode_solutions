@@ -1,30 +1,30 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        int n = nums2.size();
-
         unordered_map<int, int> umap;
         stack<int> st;
 
-        vector<int> answer;
+        int n = nums2.size();
 
-        for (int i = 0; i < n; i++) {
-            int curr = nums2[i];
-            while(!st.empty() && st.top() < curr) {
-                umap[st.top()] = curr;
+        for (int i = n - 1; i >= 0; i--) {
+
+            int num = nums2[i];
+
+            while (!st.empty() && st.top() <= num) {
                 st.pop();
             }
-            st.push(curr);
+
+            int greaterVal = st.empty() ? -1 : st.top();
+            umap[num] = greaterVal;
+
+            st.push(num);
         }
 
-        while (!st.empty()) {
-            umap[st.top()] = -1;
-            st.pop();
-        }
+        vector<int> result;
 
         for (auto it : nums1) {
-            answer.push_back(umap[it]);
+            result.push_back(umap[it]);
         }
-        return answer;
+        return result;
     }
 };
