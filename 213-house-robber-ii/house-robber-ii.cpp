@@ -1,24 +1,30 @@
 class Solution {
 public:
-    int solve(int idx, vector<int>& nums,int end,vector<int>& dp) {
-        if (idx < end)return 0;
-        if (dp[idx] != -1)
-            return dp[idx];
+    int solve(vector<int>& nums, int start, int idx,vector<int>& dp) {
+        if (idx < start)
+            return 0;
 
-        int noTake = solve(idx - 1, nums,end, dp);
-        int take = nums[idx] + solve(idx - 2, nums,end, dp);
+        if (idx == start) {
+            return nums[idx];
+        }
 
-        return dp[idx] = max(noTake, take);
+        if(dp[idx] != -1)return dp[idx];
+
+        int noTake = solve(nums, start, idx - 1,dp);
+        int Take = nums[idx] + solve(nums, start, idx - 2,dp);
+
+        return dp[idx] =  max(noTake, Take);
     }
     int rob(vector<int>& nums) {
         int n = nums.size();
-        if (n == 1) return nums[0]; 
 
-        vector<int> dp(n + 1, -1);
-        vector<int> dp2(n + 1, -1);
+        if(n==1)return nums[0];
+        vector<int>dp(n+1, -1);
+        vector<int>dp2(n+1, -1);
 
-        int val1 = solve(n - 1, nums,1 ,dp);
-        int val2 = solve(n - 2, nums,0, dp2);
+        int val1 = solve(nums, 1, n - 1,dp);
+        int val2 = solve(nums, 0, n - 2,dp2);
+
         return max(val1, val2);
     }
 };
