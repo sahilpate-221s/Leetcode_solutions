@@ -1,29 +1,24 @@
 class Solution {
 public:
-    int numSubarraysWithSum(vector<int>& nums, int goal) {
-        
-        int n= nums.size();
-        int count = 0; // count the total number of subarrays 
+    int helper(vector<int>& nums, int goal) {
+        int n = nums.size();
+        int sum = 0;
+        int count = 0;
+        int j = 0;
 
-        int sum = 0; // finds the running sum of the array till i
-        unordered_map<int,int>umap;
-        for(int i=0;i<n;i++)
-        {
-
-
+        for (int i = 0; i < n; i++) {
             sum += nums[i];
-
-            // check if sum == goal
-            if(sum == goal)count++;
-
-            // finding the remaing sum which might found previously 
-            int rem = sum-goal;
-            if(umap.find(rem) != umap.end())
-            {
-                count+= umap[rem];
+            while (j <= i && sum > goal) {
+                sum -= nums[j];
+                j++;
             }
-            umap[sum]++;
+
+            count += i - j + 1;
         }
+
         return count;
+    }
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        return helper(nums, goal) - helper(nums, goal-1);
     }
 };
