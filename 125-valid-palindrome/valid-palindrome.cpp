@@ -1,30 +1,28 @@
 class Solution {
 public:
-    bool helper(int i, int j, string& str)
-    {
-        //base case
-        if(i>j)return true;
-        
-        if(str[i] == str[j])
-        {
-            return helper(i+1,j-1,str);
-        }
-        return false;
-    }
     bool isPalindrome(string s) {
-        
+        int n = s.length();
         string str = "";
 
-        for(int i=0;i<s.length();i++)
-        {
-            if((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') || (s[i] >= '0' && s[i]<='9'))
-            {
-                str+= tolower(s[i]);
+        for (auto x : s) {
+            if ((x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') ||
+                (x >= '0' && x <= '9')) {
+                str += tolower(x);
             }
-
         }
 
-        int j = str.length()-1;
-        return helper(0,j,str);
+        if (str.empty())
+            return true;
+
+        int i = 0;
+        int j = str.length() - 1;
+
+        while (i < j) {
+            if (str[i] != str[j])
+                return false;
+            i++;
+            j--;
+        }
+        return true;
     }
 };
