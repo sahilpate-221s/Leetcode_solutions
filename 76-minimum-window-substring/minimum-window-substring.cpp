@@ -1,51 +1,42 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-
         int n = s.length();
-
         int remaining = t.length();
-
         if (remaining > n)
             return "";
 
         unordered_map<char, int> umap;
+        int maxLen = INT_MAX;
         for (auto it : t) {
             umap[it]++;
         }
 
-        int mini = INT_MAX;
-        int startIdx = 0;
-        int j = 0;
+        int left = 0;
+        int start = 0;
 
-        string str = "";
-
-        for (int i = 0; i < n; i++) {
-
-            umap[s[i]]--;
-            if (umap[s[i]] >= 0) {
+        int i = 0;
+        for (; i < n; i++) {
+            char ch = s[i];
+            umap[ch]--;
+            if (umap[ch] >= 0) {
                 remaining--;
             }
 
             while (remaining == 0) {
-
-                if (i - j + 1 < mini) {
-                    startIdx = j;
-                    mini = i - j + 1;
+                if (i - left + 1 < maxLen) {
+                    maxLen = i - left + 1;
+                    start = left;
                 }
-
-                umap[s[j]]++;
-                if (umap[s[j]] > 0) {
+                umap[s[left]]++;
+                if (umap[s[left]] > 0)
                     remaining++;
-                }
 
-                j++;
+                left++;
             }
         }
-
-        if (mini == INT_MAX)
+        if (maxLen == INT_MAX)
             return "";
-        str = s.substr(startIdx, mini);
-        return str;
+        return s.substr(start, maxLen);
     }
 };
