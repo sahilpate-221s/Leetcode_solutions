@@ -2,23 +2,25 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         int n = s.length();
-        unordered_set<char>umap;
-        int j = 0;
 
-        int maxi = 0;
-        for(int i=0;i<n;i++)
+        unordered_map<char,int>umap;
+        int maxLen = 0;
+        int left = 0;
+        for(int right = 0;right < n;right++)
         {
-            char ch = s[i];
+            char ch = s[right];
             while(umap.find(ch) != umap.end())
             {
-                umap.erase(s[j]);
-                j++;
+                umap[s[left]]--;
+                if(umap[s[left]] == 0)
+                {
+                    umap.erase(s[left]);
+                }
+                left++;
             }
-            maxi = max(maxi, i-j+1);
-            umap.insert(s[i]);
+            maxLen = max(maxLen, right-left+1);
+            umap[ch]++;
         }
-
-        return maxi;
-        
+        return maxLen;
     }
 };
