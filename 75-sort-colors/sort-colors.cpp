@@ -1,20 +1,32 @@
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
+        // ductch national flag algorithm
+        int n = nums.size();
 
-        int low = 0, mid = 0, high = nums.size() - 1;
+        int left = 0; // left side for 0s
+        int right = n-1; // right side for 2s
+        int mid = 0;
 
-        while (mid <= high) {
-            if (nums[mid] == 0) {
-                std::swap(nums[low], nums[mid]);
-                low++;
+        while(mid <= right)
+        {
+            if(nums[mid] == 0)
+            {
+                swap(nums[left], nums[mid]);
+                left++;
                 mid++;
-            } else if (nums[mid] == 1) {
+            }
+            else if(nums[mid] == 1)
+            {
                 mid++;
-            } else {
-                std::swap(nums[mid], nums[high]);
-                high--;
+            }
+            else
+            {
+                swap(nums[mid], nums[right]);
+                right--;
             }
         }
+        
+        
     }
 };
