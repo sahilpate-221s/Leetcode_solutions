@@ -1,24 +1,24 @@
 class Solution {
 public:
-    int maxArea(vector<int>& nums) {
-        int n = nums.size();
-        int maxArea = 0;
+    int maxArea(vector<int>& height) {
 
+        int size = height.size();
         int left = 0;
-        int right = n - 1;
-
+        int right = size - 1;
+        int maxLeft = height[0];
+        int maxRight = height[right];
+        int area = 0;
         while (left < right) {
-            int width = min(nums[left], nums[right]);
-
-            int area = (right - left) * width;
-            maxArea = max(maxArea, area);
-
-            if (nums[left] < nums[right]) {
+            maxLeft = max(maxLeft, height[left]);
+            maxRight = max(maxRight, height[right]);
+            int height = min(maxLeft, maxRight);
+            int width = right - left;
+            area = max(area, height * width);
+            if (maxLeft < maxRight) {
                 left++;
-            } else {
+            } else
                 right--;
-            }
         }
-        return maxArea;
+        return area;
     }
 };
